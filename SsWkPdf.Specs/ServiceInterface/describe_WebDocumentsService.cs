@@ -79,6 +79,9 @@ namespace SsWkPdf.Specs.ServiceInterface
             }
         }
 
+        /// <summary>
+        /// Spec for fixture data, ensures that fixture data exsits in memory db
+        /// </summary>
         private void describe_the_fixture_data()
         {
             it["should have the WebDocument table"] = () =>
