@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections;
 using ServiceStack;
 using ServiceStack.DataAnnotations;
 using SsWkPdf.Common.Util;
 using SsWkPdf.ServiceModel.Type;
+using WkHtmlToXSharp;
 
 namespace SsWkPdf.ServiceModel
 {
@@ -22,6 +22,8 @@ namespace SsWkPdf.ServiceModel
             public string MarginBottom { get; set; }
             public string MarginLeft { get; set; }
             public string MarginRight { get; set; }
+
+            public PdfOrientation? Orientation { get; set; }
         }
 
         [Route("/webdocument/{Id}/delete", "GET DELETE", Summary = "Deletes the document by id.")]

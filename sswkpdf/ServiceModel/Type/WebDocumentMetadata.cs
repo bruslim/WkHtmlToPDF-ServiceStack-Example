@@ -1,6 +1,7 @@
 using System;
 using ServiceStack.DataAnnotations;
 using SsWkPdf.Model;
+using WkHtmlToXSharp;
 
 namespace SsWkPdf.ServiceModel.Type
 {
@@ -26,6 +27,9 @@ namespace SsWkPdf.ServiceModel.Type
         
         [StringLength(31)]
         public string MarginTop { get; set; }
+
+        [StringLength(31)]
+        public PdfOrientation Orientation { get; set; }
 
         // use nvarchar for unicode names
         [Required, CustomField("NVARCHAR(2047)"), StringLength(2047)]

@@ -37,6 +37,7 @@ namespace SsWkPdf.ServiceInterface
         /// <param name="marginBottom">The margin bottom.</param>
         /// <param name="marginLeft">The margin left.</param>
         /// <param name="marginRight">The margin right.</param>
+        /// <param name="orientation"></param>
         /// <returns></returns>
         private byte[] Convert(
             string url,
@@ -44,10 +45,12 @@ namespace SsWkPdf.ServiceInterface
             string marginTop = null,
             string marginBottom = null,
             string marginLeft = null,
-            string marginRight = null)
+            string marginRight = null,
+            PdfOrientation? orientation = PdfOrientation.Portrait)
         {
             Converter.ObjectSettings.Page = url;
             Converter.ObjectSettings.Web.PrintMediaType = usePrintMediaType;
+            Converter.GlobalSettings.Orientation = orientation ?? Converter.GlobalSettings.Orientation;
 
             // setup margins
             var margin = Converter.GlobalSettings.Margin;
@@ -119,7 +122,8 @@ namespace SsWkPdf.ServiceInterface
                 request.MarginTop,
                 request.MarginBottom,
                 request.MarginLeft,
-                request.MarginRight);
+                request.MarginRight,
+                request.Orientation);
 
             // create the new record
             var record = new WebDocument
@@ -134,7 +138,8 @@ namespace SsWkPdf.ServiceInterface
                 MarginBottom = request.MarginBottom,
                 MarginLeft = request.MarginLeft,
                 MarginRight = request.MarginRight,
-                MarginTop = request.MarginTop
+                MarginTop = request.MarginTop,
+                Orientation = request.Orientation ?? PdfOrientation.Portrait
             };
 
             // validate the changes
@@ -181,12 +186,15 @@ namespace SsWkPdf.ServiceInterface
 
             // update UsePrintMediaType flag if provided
             record.UsePrintMediaType = request.UsePrintMediaType ?? record.UsePrintMediaType;
-
+            
             // update margins
             record.MarginTop = request.MarginTop ?? record.MarginTop;
             record.MarginBottom = request.MarginBottom ?? record.MarginBottom;
             record.MarginLeft = request.MarginLeft ?? record.MarginLeft;
             record.MarginRight = request.MarginRight ?? record.MarginRight;
+
+            // update orientation setting
+            record.Orientation = request.Orientation ?? record.Orientation;
 
             // convert the html to pdf
             var file = Convert(
@@ -195,7 +203,8 @@ namespace SsWkPdf.ServiceInterface
                 record.MarginTop,
                 record.MarginBottom,
                 record.MarginLeft,
-                record.MarginRight);
+                record.MarginRight,
+                record.Orientation);
 
             // Update fhe File, and corresponding fields
             record.File = file;
@@ -211,7 +220,9 @@ namespace SsWkPdf.ServiceInterface
             Db.Update(record);
 
             // use ToMeta() to remove byte[] from response
-            return new HttpResult(record.ToMetadataResponse());
+            return HttpResult.SoftRedirect(
+                (new WebDocuments.FindByIdRequest {Id = record.Id}).ToGetUrl(),
+                record.ToMetadataResponse());
         }
 
         public object Get(WebDocuments.FindByIdRequest request)
