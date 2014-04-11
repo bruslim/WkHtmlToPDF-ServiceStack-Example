@@ -80,6 +80,13 @@
     <Compile Include="DebuggerShim.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceInterface\describe_WebDocumentsService.cs" />
+    <Compile Include="ServiceInterface\describe_WebDocumentsService_CreateRequest_Handler.cs" />
+    <Compile Include="ServiceInterface\describe_WebDocumentsService_DeleteRequest_handler.cs" />
+    <Compile Include="ServiceInterface\describe_WebDocumentsService_DownloadRequest_handler.cs" />
+    <Compile Include="ServiceInterface\describe_WebDocumentsService_FindByIdRequest_handler.cs" />
+    <Compile Include="ServiceInterface\describe_WebDocumentsService_FindRequest_handler.cs" />
+    <Compile Include="ServiceInterface\describe_WebDocumentsService_MetadataRequest_handler.cs" />
+    <Compile Include="ServiceInterface\describe_WebDocumentsService_UpdateRequest_handler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
