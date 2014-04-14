@@ -1,7 +1,7 @@
 WkHtmlToPDF-ServiceStack-Example
 ================================
 
-Example of a [ServiceStack v4](/ServiceStack/ServiceStack) Web Service which uses WkHtmlToPDF to convert html to pdfs.
+Example of a [ServiceStack v4](~/ServiceStack/ServiceStack) Web Service which uses WkHtmlToPDF to convert html to pdfs.
 
 Due to the dependency on [WkHtmlToXSharp](/pruiz/WkHtmlToXSharp), the applicaiton must be configured for a 32-bit build.
 
