@@ -191,7 +191,7 @@ namespace SsWkPdf.ServiceInterface
 
             // update UsePrintMediaType flag if provided
             metaRecord.UsePrintMediaType = request.UsePrintMediaType ?? metaRecord.UsePrintMediaType;
-            
+
             // update margins
             metaRecord.MarginTop = request.MarginTop ?? metaRecord.MarginTop;
             metaRecord.MarginBottom = request.MarginBottom ?? metaRecord.MarginBottom;
@@ -199,7 +199,7 @@ namespace SsWkPdf.ServiceInterface
             metaRecord.MarginRight = request.MarginRight ?? metaRecord.MarginRight;
 
             // update orientation setting
-            metaRecord .Orientation = request.Orientation ?? metaRecord.Orientation;
+            metaRecord.Orientation = request.Orientation ?? metaRecord.Orientation;
 
             // convert the html to pdf
             var file = Convert(
