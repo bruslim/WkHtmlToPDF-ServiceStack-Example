@@ -15,7 +15,7 @@ Uses .net 4.5.1
 
 ---
 
-WkHtmlToXSharp is supposed to provide its own copy of wkhtmltox.dll however,
+WkHtmlToXSharp is supposed to provide its own copy of [wkhtmltox.dll](http://wkhtmltopdf.org/) however,
 I've noticed that it does not.
 
 I've provided a copy of the binary file, with the correct name in the lib folder.
