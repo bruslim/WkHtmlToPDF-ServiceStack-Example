@@ -12,17 +12,68 @@ namespace SsWkPdf.ServiceModel
         [Route("/webdocument", "POST", Summary = "Creates the document.")]
         public class CreateRequest
         {
+            /// <summary>
+            /// Gets or sets the source URL.
+            /// </summary>
+            /// <value>
+            /// The source URL.
+            /// </value>
             public string SourceUrl { get; set; }
 
+            /// <summary>
+            /// Gets or sets the name of the file.
+            /// </summary>
+            /// <value>
+            /// The name of the file.
+            /// </value>
             public string FileName { get; set; }
 
+            /// <summary>
+            /// Gets or sets the type of the use print media.
+            /// </summary>
+            /// <value>
+            /// The type of the use print media.
+            /// </value>
             public bool? UsePrintMediaType { get; set; }
 
+            /// <summary>
+            /// Gets or sets the margin top.
+            /// </summary>
+            /// <value>
+            /// The margin top.
+            /// </value>
             public string MarginTop { get; set; }
+
+            /// <summary>
+            /// Gets or sets the margin bottom.
+            /// </summary>
+            /// <value>
+            /// The margin bottom.
+            /// </value>
             public string MarginBottom { get; set; }
+
+            /// <summary>
+            /// Gets or sets the margin left.
+            /// </summary>
+            /// <value>
+            /// The margin left.
+            /// </value>
             public string MarginLeft { get; set; }
+
+            /// <summary>
+            /// Gets or sets the margin right.
+            /// </summary>
+            /// <value>
+            /// The margin right.
+            /// </value>
             public string MarginRight { get; set; }
 
+            /// <summary>
+            /// Gets or sets the orientation.
+            /// </summary>
+            /// <value>
+            /// The orientation.
+            /// </value>
             public PdfOrientation? Orientation { get; set; }
         }
 
@@ -37,23 +88,54 @@ namespace SsWkPdf.ServiceModel
         }
 
 
-        [Route("/webdocuments", "GET", Summary = "Page through all the documents.")]
-        [Route("/webdocuments/{Page}", "GET", Summary = "Page through all the documents.")]
-        public class FindRequest : IReturn<PagedResponse<MetadataResponse>>
-        {
-            public int Page { get; set; }
-            public int PageSize { get; set; }
-
-            public DateTimeOffset? From { get; set; }
-
-            public DateTimeOffset? To { get; set; }
-        }
-
         [Route("/webdocument/{Id}", "GET", Summary = "View a document by id.")]
         [Route("/webdocument/{Id}", "DELETE", Summary = "Deletes the document by id.")]
         public class FindByIdRequest
         {
+            /// <summary>
+            /// Gets or sets the identifier.
+            /// </summary>
+            /// <value>
+            /// The identifier.
+            /// </value>
             public Guid Id { get; set; }
+        }
+
+        [Route("/webdocuments", "GET", Summary = "Page through all the documents.")]
+        [Route("/webdocuments/{Page}", "GET", Summary = "Page through all the documents.")]
+        public class FindRequest : IReturn<PagedResponse<MetadataResponse>>
+        {
+            /// <summary>
+            /// Gets or sets the page.
+            /// </summary>
+            /// <value>
+            /// The page.
+            /// </value>
+            public int Page { get; set; }
+
+            /// <summary>
+            /// Gets or sets the size of the page.
+            /// </summary>
+            /// <value>
+            /// The size of the page.
+            /// </value>
+            public int PageSize { get; set; }
+
+            /// <summary>
+            /// Gets or sets from.
+            /// </summary>
+            /// <value>
+            /// From.
+            /// </value>
+            public DateTimeOffset? From { get; set; }
+
+            /// <summary>
+            /// Gets or sets to.
+            /// </summary>
+            /// <value>
+            /// To.
+            /// </value>
+            public DateTimeOffset? To { get; set; }
         }
 
         [Route("/webdocument/{Id}/metadata", "GET", Summary = "View the document metadata by id.")]
@@ -61,27 +143,59 @@ namespace SsWkPdf.ServiceModel
         {
         }
 
-        [Route("/webdocument", "POST", Summary = "Updates the document.")]
-        [Route("/webdocument/{Id}", "POST PUT", Summary = "Updates the document.")]
-        public class UpdateRequest : CreateRequest
+        public class MetadataResponse : WebDocumentMetadata, IHasResponseStatus
         {
-            public Guid Id { get; set; }
-
-            [Description("Record Version when first retrieved, for concurrency checking.")]
-            public int RecordVersion { get; set; }
-        }
-
-        public class MetadataResponse : WebDocumentMetadata
-        {
+            /// <summary>
+            /// Gets the size of the file.
+            /// </summary>
+            /// <value>
+            /// The size of the file.
+            /// </value>
             public string FileSize
             {
                 get { return Calculator.BytesToString(FileLength); }
             }
 
+            /// <summary>
+            /// Gets a value indicating whether this instance is updated.
+            /// </summary>
+            /// <value>
+            /// <c>true</c> if this instance is updated; otherwise, <c>false</c>.
+            /// </value>
             public bool IsUpdated
             {
                 get { return RecordVersion > 1; }
             }
+
+            /// <summary>
+            /// Gets or sets the response status.
+            /// </summary>
+            /// <value>
+            /// The response status.
+            /// </value>
+            public ResponseStatus ResponseStatus { get; set; }
+        }
+
+        [Route("/webdocument", "POST", Summary = "Updates the document.")]
+        [Route("/webdocument/{Id}", "POST PUT", Summary = "Updates the document.")]
+        public class UpdateRequest : CreateRequest
+        {
+            /// <summary>
+            /// Gets or sets the identifier.
+            /// </summary>
+            /// <value>
+            /// The identifier.
+            /// </value>
+            public Guid Id { get; set; }
+
+            /// <summary>
+            /// Gets or sets the record version.
+            /// </summary>
+            /// <value>
+            /// The record version.
+            /// </value>
+            [Description("Record Version when first retrieved, for concurrency checking.")]
+            public int RecordVersion { get; set; }
         }
     }
 }

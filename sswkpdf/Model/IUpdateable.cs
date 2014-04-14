@@ -7,7 +7,7 @@ namespace SsWkPdf.Model
     {
         [Required]
         DateTimeOffset UpdatedOn { get; set; }
-        
+
         [Required, Default(1)]
         int RecordVersion { get; set; }
     }

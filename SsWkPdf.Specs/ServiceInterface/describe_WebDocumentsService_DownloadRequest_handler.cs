@@ -12,7 +12,7 @@ using SsWkPdf.ServiceModel.Type;
 
 namespace SsWkPdf.Specs.ServiceInterface
 {
-    class describe_WebDocumentsService_DownloadRequest_handler : describe_WebDocumentsService
+    internal class describe_WebDocumentsService_DownloadRequest_handler : describe_WebDocumentsService
     {
         private void given_the_fixture_data()
         {

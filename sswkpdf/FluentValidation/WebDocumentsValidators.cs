@@ -5,19 +5,6 @@ namespace SsWkPdf.FluentValidation
 {
     public class WebDocumentsValidators
     {
-        public abstract class CreateAbstractValidator<T> : AbstractValidator<T> where T : WebDocuments.CreateRequest
-        {
-            protected CreateAbstractValidator()
-            {
-                RuleFor(r => r.FileName).Length(0, 255);
-
-                RuleFor(r => r.MarginBottom).Length(0, 31);
-                RuleFor(r => r.MarginLeft).Length(0, 31);
-                RuleFor(r => r.MarginRight).Length(0, 31);
-                RuleFor(r => r.MarginTop).Length(0, 31);
-            }
-        }
-
         public class Create : CreateAbstractValidator<WebDocuments.CreateRequest>
         {
             public Create()
@@ -31,6 +18,19 @@ namespace SsWkPdf.FluentValidation
             public IUriValidator UriValidator { get; set; }
         }
 
+        public abstract class CreateAbstractValidator<T> : AbstractValidator<T> where T : WebDocuments.CreateRequest
+        {
+            protected CreateAbstractValidator()
+            {
+                RuleFor(r => r.FileName).Length(0, 255);
+
+                RuleFor(r => r.MarginBottom).Length(0, 31);
+                RuleFor(r => r.MarginLeft).Length(0, 31);
+                RuleFor(r => r.MarginRight).Length(0, 31);
+                RuleFor(r => r.MarginTop).Length(0, 31);
+            }
+        }
+
         public class FindById : AbstractValidator<WebDocuments.FindByIdRequest>
         {
             public FindById()
@@ -41,7 +41,7 @@ namespace SsWkPdf.FluentValidation
 
         public class Update : CreateAbstractValidator<WebDocuments.UpdateRequest>
         {
-            public Update() 
+            public Update()
             {
                 RuleFor(r => r.Id).NotEmpty();
 

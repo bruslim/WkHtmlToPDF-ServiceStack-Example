@@ -17,14 +17,14 @@ namespace SsWkPdf.FluentValidation
             RuleFor(r => r.ContentType).NotEmpty().Length(1, 255);
             RuleFor(r => r.Md5Sum).NotEmpty().Length(32);
             RuleFor(r => r.FileLength).GreaterThan(0);
-            
-            RuleFor(r => r.MarginBottom).Length(0,31);
-            RuleFor(r => r.MarginLeft).Length(0,31);
-            RuleFor(r => r.MarginRight).Length(0,31);
-            RuleFor(r => r.MarginTop).Length(0,31);
-            
+
+            RuleFor(r => r.MarginBottom).Length(0, 31);
+            RuleFor(r => r.MarginLeft).Length(0, 31);
+            RuleFor(r => r.MarginRight).Length(0, 31);
+            RuleFor(r => r.MarginTop).Length(0, 31);
+
             RuleFor(r => r.UpdatedOn)
-                .GreaterThanOrEqualTo(r=> r.CreatedOn);
+                .GreaterThanOrEqualTo(r => r.CreatedOn);
 
             RuleFor(r => r.RecordVersion).GreaterThan(0);
         }

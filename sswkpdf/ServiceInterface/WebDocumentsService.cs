@@ -244,6 +244,13 @@ namespace SsWkPdf.ServiceInterface
             // use validator to validate request
             FindByIdValidator.ValidateAndThrow(request);
 
+            // special handling of x-msgpack
+            if (Request.ResponseContentType == "application/x-msgpack")
+            {
+                // return full record
+                return GetWebDocument(request.Id);
+            }
+
             return new FileResult(GetWebDocument(request.Id), false);
         }
 

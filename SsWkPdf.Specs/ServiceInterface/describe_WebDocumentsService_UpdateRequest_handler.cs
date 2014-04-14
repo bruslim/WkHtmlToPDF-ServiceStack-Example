@@ -11,7 +11,7 @@ using SsWkPdf.ServiceModel.Type;
 
 namespace SsWkPdf.Specs.ServiceInterface
 {
-    class describe_WebDocumentsService_UpdateRequest_handler : describe_WebDocumentsService
+    internal class describe_WebDocumentsService_UpdateRequest_handler : describe_WebDocumentsService
     {
         private void given_the_fixture_data()
         {

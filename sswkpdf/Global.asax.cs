@@ -7,12 +7,9 @@ using ServiceStack.Data;
 using ServiceStack.MiniProfiler;
 using ServiceStack.MiniProfiler.Data;
 using ServiceStack.OrmLite;
-using ServiceStack.Validation;
 using SsWkPdf.Common;
-using SsWkPdf.FluentValidation;
 using SsWkPdf.ServiceInterface;
 using SsWkPdf.ServiceModel.Type;
-using WkHtmlToXSharp;
 
 namespace SsWkPdf
 {
@@ -70,7 +67,7 @@ namespace SsWkPdf
 
                 //register any dependencies your services use, e.g:
                 AppConfig.Config(container);
-                
+
                 // register db factory with IoC
                 container.Register<IDbConnectionFactory>(
                     new OrmLiteConnectionFactory(ConfigUtils.GetConnectionString("AppDb"), SqlServerDialect.Provider)

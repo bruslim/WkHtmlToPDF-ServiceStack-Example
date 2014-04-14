@@ -21,10 +21,10 @@ namespace SsWkPdf.ServiceModel.Type
 
         [StringLength(31)]
         public string MarginLeft { get; set; }
-        
+
         [StringLength(31)]
         public string MarginRight { get; set; }
-        
+
         [StringLength(31)]
         public string MarginTop { get; set; }
 
@@ -34,11 +34,9 @@ namespace SsWkPdf.ServiceModel.Type
         // use nvarchar for unicode names
         [Required, CustomField("NVARCHAR(2047)"), StringLength(2047)]
         public string SourceUrl { get; set; }
-        
+
         [Required]
         public bool UsePrintMediaType { get; set; }
-        
-        public DateTimeOffset UpdatedOn { get; set; }
 
         [PrimaryKey]
         public Guid Id { get; set; }
@@ -57,10 +55,12 @@ namespace SsWkPdf.ServiceModel.Type
         public string Md5Sum { get; set; }
 
 
-        [Required, Default(typeof(DateTimeOffset), "SYSDATETIMEOFFSET()")]
+        [Required, Default(typeof (DateTimeOffset), "SYSDATETIMEOFFSET()")]
         public DateTimeOffset CreatedOn { get; set; }
 
-       
+        public DateTimeOffset UpdatedOn { get; set; }
+
+
         [Required, Default(1)]
         public int RecordVersion { get; set; }
     }
