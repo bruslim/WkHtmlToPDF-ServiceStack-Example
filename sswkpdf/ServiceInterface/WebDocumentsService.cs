@@ -159,14 +159,19 @@ namespace SsWkPdf.ServiceInterface
             // use validator to validate request
             UpdateValidator.ValidateAndThrow(request);
 
-            // get the record from the db
-            var record = GetWebDocument(request.Id);
+            // get the record from the db (use metadata, to avoid querying file)
+            var metaRecord = Db.Select<WebDocumentMetadata>(r => r.Id == request.Id).FirstOrDefault();
+            if (metaRecord == null)
+            {
+                // if not found throw 404
+                throw HttpError.NotFound("Web Document {0} does not exist.".Fmt(request.Id));
+            }
 
-            // concurrency check
-            if (record.RecordVersion != request.RecordVersion)
+            // concurrency check, record versions must match
+            if (metaRecord.RecordVersion != request.RecordVersion)
             {
                 return new HttpError(
-                    record.ToMetadataResponse(),
+                    metaRecord.ToMetadataResponse(),
                     HttpStatusCode.Conflict,
                     "Conflict",
                     "Record has been updated by someone else.");
@@ -175,43 +180,52 @@ namespace SsWkPdf.ServiceInterface
             // only update if not empty or whitespace
             if (!string.IsNullOrWhiteSpace(request.SourceUrl))
             {
-                record.SourceUrl = request.SourceUrl;
+                metaRecord.SourceUrl = request.SourceUrl;
             }
 
             // only update if not empty or whitespace
             if (!string.IsNullOrWhiteSpace(request.FileName))
             {
-                record.FileName = request.FileName;
+                metaRecord.FileName = request.FileName;
             }
 
             // update UsePrintMediaType flag if provided
-            record.UsePrintMediaType = request.UsePrintMediaType ?? record.UsePrintMediaType;
+            metaRecord.UsePrintMediaType = request.UsePrintMediaType ?? metaRecord.UsePrintMediaType;
             
             // update margins
-            record.MarginTop = request.MarginTop ?? record.MarginTop;
-            record.MarginBottom = request.MarginBottom ?? record.MarginBottom;
-            record.MarginLeft = request.MarginLeft ?? record.MarginLeft;
-            record.MarginRight = request.MarginRight ?? record.MarginRight;
+            metaRecord.MarginTop = request.MarginTop ?? metaRecord.MarginTop;
+            metaRecord.MarginBottom = request.MarginBottom ?? metaRecord.MarginBottom;
+            metaRecord.MarginLeft = request.MarginLeft ?? metaRecord.MarginLeft;
+            metaRecord.MarginRight = request.MarginRight ?? metaRecord.MarginRight;
 
             // update orientation setting
-            record.Orientation = request.Orientation ?? record.Orientation;
+            metaRecord .Orientation = request.Orientation ?? metaRecord.Orientation;
 
             // convert the html to pdf
             var file = Convert(
-                record.SourceUrl,
-                record.UsePrintMediaType,
-                record.MarginTop,
-                record.MarginBottom,
-                record.MarginLeft,
-                record.MarginRight,
-                record.Orientation);
+                metaRecord.SourceUrl,
+                metaRecord.UsePrintMediaType,
+                metaRecord.MarginTop,
+                metaRecord.MarginBottom,
+                metaRecord.MarginLeft,
+                metaRecord.MarginRight,
+                metaRecord.Orientation);
+
+            // update the metadata file info fields
+            metaRecord.FileLength = file.LongLength;
+            metaRecord.Md5Sum = file.ToMd5Sum();
+
+            // update the updated on date
+            metaRecord.UpdatedOn = DateTimeOffset.UtcNow;
+
+            // increase the record version
+            metaRecord.RecordVersion += 1;
+
+            // prep a WebDocument object, and populate it with the metadata 
+            var record = (new WebDocument()).PopulateWith(metaRecord);
 
             // Update fhe File, and corresponding fields
             record.File = file;
-            record.FileLength = file.LongLength;
-            record.Md5Sum = file.ToMd5Sum();
-            record.UpdatedOn = DateTimeOffset.UtcNow;
-            record.RecordVersion += 1;
 
             // validate the changes
             WebDocumentValidator.ValidateAndThrow(record);
