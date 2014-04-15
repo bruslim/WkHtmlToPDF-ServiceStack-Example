@@ -1,7 +1,8 @@
 ﻿using ServiceStack.FluentValidation;
+using SsWkPdf.FluentValidation;
 using SsWkPdf.ServiceModel;
 
-namespace SsWkPdf.FluentValidation
+namespace SsWkPdf.ServiceInterface.FluentValidation
 {
     public class WebDocumentsValidators
     {

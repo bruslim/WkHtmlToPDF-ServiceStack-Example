@@ -104,6 +104,18 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SsWkPdf.Common\SsWkPdf.Common.csproj">
+      <Project>{99170915-9253-4d34-a23b-698dca98c0d4}</Project>
+      <Name>SsWkPdf.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SsWkPdf.ServiceInterface\SsWkPdf.ServiceInterface.csproj">
+      <Project>{3a2a974a-18ae-4302-b103-496a9a8e4978}</Project>
+      <Name>SsWkPdf.ServiceInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SsWkPdf.ServiceModel\SsWkPdf.ServiceModel.csproj">
+      <Project>{b6ae65f7-1692-43de-9c31-fb89ff441a15}</Project>
+      <Name>SsWkPdf.ServiceModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\sswkpdf\SsWkPdf.csproj">
       <Project>{378CC81F-9083-4002-A542-AECD01A74AFE}</Project>
       <Name>SsWkPdf</Name>

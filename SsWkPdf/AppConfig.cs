@@ -4,9 +4,10 @@ using ServiceStack;
 using ServiceStack.MsgPack;
 using ServiceStack.Validation;
 using SsWkPdf.FluentValidation;
+using SsWkPdf.ServiceInterface.FluentValidation;
 using WkHtmlToXSharp;
 
-namespace SsWkPdf.Common
+namespace SsWkPdf
 {
     public static class AppConfig
     {
@@ -14,6 +15,7 @@ namespace SsWkPdf.Common
         {
             // register pdf converter with IoC
             container.Register<IHtmlToPdfConverter>(new MultiplexingConverter());
+
 
             // register validators
             container.Register<IUriValidator>(new UriValidator());

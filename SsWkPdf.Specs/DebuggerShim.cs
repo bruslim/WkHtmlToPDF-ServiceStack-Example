@@ -27,14 +27,15 @@ public class DebuggerShim
     [Test]
     public void debug()
     {
-        //var tagOrClassName = "describe_WebDocumentsService_FindRequest_handler";
+        //var tagOrClassName = "describe_WebDocumentsService_UpdateRequest_handler";
+        var tagOrClassName = "describe_WebDocumentsClient";
 
         var types = GetType().Assembly.GetTypes(); 
         // OR
         // var types = new Type[]{typeof(Some_Type_Containg_some_Specs)};
         var finder = new SpecFinder(types, "");
-        //var builder = new ContextBuilder(finder, new Tags().Parse(tagOrClassName), new DefaultConventions());
-        var builder = new ContextBuilder(finder, new DefaultConventions());
+        var builder = new ContextBuilder(finder, new Tags().Parse(tagOrClassName), new DefaultConventions());
+        //var builder = new ContextBuilder(finder, new DefaultConventions());
         var runner = new ContextRunner(builder, new ConsoleFormatter(), false);
         var results = runner.Run(builder.Contexts().Build());
 

@@ -7,7 +7,6 @@ using ServiceStack.Data;
 using ServiceStack.MiniProfiler;
 using ServiceStack.MiniProfiler.Data;
 using ServiceStack.OrmLite;
-using SsWkPdf.Common;
 using SsWkPdf.ServiceInterface;
 using SsWkPdf.ServiceModel.Type;
 

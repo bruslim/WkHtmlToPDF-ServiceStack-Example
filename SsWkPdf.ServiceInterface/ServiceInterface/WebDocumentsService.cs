@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using ServiceStack;
 using ServiceStack.FluentValidation;
 using ServiceStack.OrmLite;
@@ -16,6 +17,7 @@ namespace SsWkPdf.ServiceInterface
     {
         public const int MaxPageSize = 1000;
         public const int DefaultPageSize = 100;
+        private static readonly ReaderWriterLockSlim ConverterLock = new ReaderWriterLockSlim();
 
         // Injected public properties
         public IValidator<WebDocument> WebDocumentValidator { get; set; }
@@ -48,18 +50,26 @@ namespace SsWkPdf.ServiceInterface
             string marginRight = null,
             PdfOrientation? orientation = PdfOrientation.Portrait)
         {
-            Converter.ObjectSettings.Page = url;
-            Converter.ObjectSettings.Web.PrintMediaType = usePrintMediaType;
-            Converter.GlobalSettings.Orientation = orientation ?? Converter.GlobalSettings.Orientation;
+            ConverterLock.EnterWriteLock();
+            try
+            {
+                Converter.ObjectSettings.Page = url;
+                Converter.ObjectSettings.Web.PrintMediaType = usePrintMediaType;
+                Converter.GlobalSettings.Orientation = orientation ?? Converter.GlobalSettings.Orientation;
 
-            // setup margins
-            var margin = Converter.GlobalSettings.Margin;
-            margin.Bottom = marginBottom ?? margin.Bottom;
-            margin.Left = marginLeft ?? margin.Left;
-            margin.Right = marginRight ?? margin.Right;
-            margin.Top = marginTop ?? margin.Top;
+                // setup margins
+                var margin = Converter.GlobalSettings.Margin;
+                margin.Bottom = marginBottom ?? margin.Bottom;
+                margin.Left = marginLeft ?? margin.Left;
+                margin.Right = marginRight ?? margin.Right;
+                margin.Top = marginTop ?? margin.Top;
 
-            return Converter.Convert();
+                return Converter.Convert();
+            }
+            finally
+            {
+                ConverterLock.ExitWriteLock();
+            }
         }
 
         /// <summary>
@@ -67,7 +77,7 @@ namespace SsWkPdf.ServiceInterface
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        /// <exception cref="HttpError">When document is not found</exception>
+        /// <exception cref="ServiceStack.HttpError">When document is not found</exception>
         private WebDocument GetWebDocument(Guid id)
         {
             var record = Db.Select<WebDocument>(r => r.Id == id).FirstOrDefault();
@@ -149,9 +159,12 @@ namespace SsWkPdf.ServiceInterface
             Db.Insert(record);
 
             // use ToMetadata() to remove byte[] from response
-            return HttpResult.Status201Created(
-                record.ToMetadataResponse(),
-                (new WebDocuments.FindByIdRequest {Id = record.Id}).ToGetUrl());
+            if (Response != null)
+            {
+                Response.StatusCode = (int) HttpStatusCode.Created;
+                Response.AddHeader(HttpHeaders.Location, (new WebDocuments.FindByIdRequest {Id = record.Id}).ToGetUrl());
+            }
+            return record.ToMetadataResponse();
         }
 
         public object Any(WebDocuments.UpdateRequest request)
@@ -243,15 +256,8 @@ namespace SsWkPdf.ServiceInterface
         {
             // use validator to validate request
             FindByIdValidator.ValidateAndThrow(request);
-
-            // special handling of x-msgpack
-            if (Request.ResponseContentType == "application/x-msgpack")
-            {
-                // return full record
-                return GetWebDocument(request.Id);
-            }
-
-            return new FileResult(GetWebDocument(request.Id), false);
+            var record = GetWebDocument(request.Id);
+            return new FileResult(record, false);
         }
 
         public object Any(WebDocuments.DeleteRequest request)
@@ -280,8 +286,8 @@ namespace SsWkPdf.ServiceInterface
         public object Any(WebDocuments.DownloadRequest request)
         {
             FindByIdValidator.ValidateAndThrow(request);
-
-            return new FileResult(GetWebDocument(request.Id));
+            var record = GetWebDocument(request.Id);
+            return new FileResult(record);
         }
 
         public WebDocuments.MetadataResponse Any(WebDocuments.MetadataRequest request)

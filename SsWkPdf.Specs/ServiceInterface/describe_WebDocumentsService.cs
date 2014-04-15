@@ -4,7 +4,6 @@ using ServiceStack;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.Testing;
-using SsWkPdf.Common;
 using SsWkPdf.Common.Util;
 using SsWkPdf.ServiceInterface;
 using SsWkPdf.ServiceModel.Type;
@@ -105,7 +104,10 @@ namespace SsWkPdf.Specs.ServiceInterface
         /// </summary>
         private void after_all()
         {
-            AppHost.Dispose();
+            if (AppHost != null)
+            {
+                AppHost.Dispose();
+            }
         }
     }
 }

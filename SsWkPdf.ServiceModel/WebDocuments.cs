@@ -10,7 +10,7 @@ namespace SsWkPdf.ServiceModel
     public class WebDocuments
     {
         [Route("/webdocument", "POST", Summary = "Creates the document.")]
-        public class CreateRequest
+        public class CreateRequest : IReturn<WebDocumentMetadata>
         {
             /// <summary>
             /// Gets or sets the source URL.
@@ -90,7 +90,7 @@ namespace SsWkPdf.ServiceModel
 
         [Route("/webdocument/{Id}", "GET", Summary = "View a document by id.")]
         [Route("/webdocument/{Id}", "DELETE", Summary = "Deletes the document by id.")]
-        public class FindByIdRequest
+        public class FindByIdRequest  : IReturn<WebDocumentMetadata>
         {
             /// <summary>
             /// Gets or sets the identifier.
@@ -146,28 +146,6 @@ namespace SsWkPdf.ServiceModel
         public class MetadataResponse : WebDocumentMetadata, IHasResponseStatus
         {
             /// <summary>
-            /// Gets the size of the file.
-            /// </summary>
-            /// <value>
-            /// The size of the file.
-            /// </value>
-            public string FileSize
-            {
-                get { return Calculator.BytesToString(FileLength); }
-            }
-
-            /// <summary>
-            /// Gets a value indicating whether this instance is updated.
-            /// </summary>
-            /// <value>
-            /// <c>true</c> if this instance is updated; otherwise, <c>false</c>.
-            /// </value>
-            public bool IsUpdated
-            {
-                get { return RecordVersion > 1; }
-            }
-
-            /// <summary>
             /// Gets or sets the response status.
             /// </summary>
             /// <value>
@@ -198,4 +176,5 @@ namespace SsWkPdf.ServiceModel
             public int RecordVersion { get; set; }
         }
     }
+
 }

@@ -55,7 +55,7 @@ namespace SsWkPdf.Specs.ServiceInterface
                         it["should have a ContentType of application/pdf"] =
                             () => response.ContentType.should_be("application/pdf");
                         it["should have a RecordVersion of 1"] = () => response.RecordVersion.should_be(1);
-                        it["should have its IsUpdated flag set to false"] = () => response.IsUpdated.should_be(false);
+                        it["should have its IsUpdated flag set to false"] = () => response.IsUpdated().should_be(false);
                         it["should not have its Md5Sum empty"] = () => response.Md5Sum.should_not_be_empty();
 
                         it["should have MarginBottom be empty "] = () => response.MarginBottom.should_be_empty();
@@ -103,7 +103,7 @@ namespace SsWkPdf.Specs.ServiceInterface
                         it["should have a ContentType of application/pdf"] =
                             () => response.ContentType.should_be("application/pdf");
                         it["should have a RecordVersion of 1"] = () => response.RecordVersion.should_be(1);
-                        it["should have its IsUpdated flag set to false"] = () => response.IsUpdated.should_be(false);
+                        it["should have its IsUpdated flag set to false"] = () => response.IsUpdated().should_be(false);
                         it["should not have its Md5Sum empty"] = () => response.Md5Sum.should_not_be_empty();
                         it["should have a MarginBottom = 0"] = () => response.MarginBottom.should_be("0");
                         it["should have a MarginLeft = 0"] = () => response.MarginLeft.should_be("0");

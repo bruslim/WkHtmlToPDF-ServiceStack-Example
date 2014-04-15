@@ -117,32 +117,25 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\AppConfig.cs" />
-    <Compile Include="Common\FileResult.cs" />
-    <Compile Include="Common\Util\ByteArrayExtensions.cs" />
-    <Compile Include="Common\Util\Calculator.cs" />
-    <Compile Include="FluentValidation\IUriValidator.cs" />
-    <Compile Include="FluentValidation\UriValidator.cs" />
-    <Compile Include="FluentValidation\WebDocumentValidator.cs" />
-    <Compile Include="Model\GuidUtil.cs" />
+    <Compile Include="AppConfig.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Model\IHasFile.cs" />
-    <Compile Include="Model\IHasFileMetadata.cs" />
-    <Compile Include="Model\IRecord.cs" />
-    <Compile Include="Model\IUpdateable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceInterface\WebDocumentsService.cs" />
-    <Compile Include="ServiceModel\IPagedResponse.cs" />
-    <Compile Include="ServiceModel\IPagingMetadata.cs" />
-    <Compile Include="ServiceModel\PagedResponse.cs" />
-    <Compile Include="ServiceModel\PagingMetadata.cs" />
-    <Compile Include="ServiceModel\Type\WebDocument.cs" />
-    <Compile Include="ServiceModel\Type\WebDocumentMetadata.cs" />
-    <Compile Include="ServiceModel\WebDocumentExtensions.cs" />
-    <Compile Include="ServiceModel\WebDocuments.cs" />
-    <Compile Include="FluentValidation\WebDocumentsValidators.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SsWkPdf.Common\SsWkPdf.Common.csproj">
+      <Project>{99170915-9253-4d34-a23b-698dca98c0d4}</Project>
+      <Name>SsWkPdf.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SsWkPdf.ServiceInterface\SsWkPdf.ServiceInterface.csproj">
+      <Project>{3a2a974a-18ae-4302-b103-496a9a8e4978}</Project>
+      <Name>SsWkPdf.ServiceInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SsWkPdf.ServiceModel\SsWkPdf.ServiceModel.csproj">
+      <Project>{b6ae65f7-1692-43de-9c31-fb89ff441a15}</Project>
+      <Name>SsWkPdf.ServiceModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
