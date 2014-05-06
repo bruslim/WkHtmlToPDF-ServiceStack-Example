@@ -94,6 +94,7 @@ namespace SsWkPdf.ServiceInterface
             // normalize paging with max and min
             var page = Math.Max(1, request.Page);
             var pageSize = Math.Min(MaxPageSize, Math.Max(1, request.PageSize > 0 ? request.PageSize : DefaultPageSize));
+
             // upper bounds of skip is int.Max, do not compute if page is int.max, just set to upper bound
             var skip = page == int.MaxValue ? int.MaxValue : pageSize*(page - 1);
 
